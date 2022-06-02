@@ -6,7 +6,7 @@ abstract class PostState {}
 class PostInitial extends PostState {}
 
 class PostLoaded extends PostState {
-  final List<Post> post;
+  final List<Post>? post;
 
   PostLoaded({this.post});
 }

@@ -8,14 +8,14 @@ part 'post_state.dart';
 class PostCubit extends Cubit<PostState> {
   PostCubit({this.repository}) : super(PostInitial());
 
-  final Repository repository;
+  final Repository? repository;
 
-  Future<List<Post>> fetchPost() async {
+  fetchPost() async {
     try {
       emit(PostInitial());
 
-      repository.fetchPost().then((posts) {
-        if (posts != null) {
+      repository!.fetchPost().then((posts) {
+        if (posts.isNotEmpty) {
           emit(PostLoaded(post: posts));
         } else {
           emit(PostErrorState(message: "Error while fetching Posts"));

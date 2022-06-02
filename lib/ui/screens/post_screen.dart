@@ -21,25 +21,21 @@ class _PostScreenState extends State<PostScreen> {
         appBar: AppBar(
           title: Text('BloC Cubit'),
         ),
-        body: BlocBuilder<PostCubit, PostState>(builder: (context, state) {
-          if (state is PostInitial) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is PostLoaded) {
-            final post = (state as PostLoaded).post;
-            return SingleChildScrollView(
-              child: Column(
-                children: post.map((e) => _cardWidget(e, context)).toList(),
-              ),
-            );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 8.0,
-                backgroundColor: Colors.green,
-              ),
-            );
-          }
-        }));
+        body: BlocBuilder<PostCubit, PostState>(
+          builder: (context, state) {
+            return state is PostInitial
+                ? Center(child: CircularProgressIndicator())
+                : state is PostLoaded
+                    ? SingleChildScrollView(
+                        child: Column(
+                          children: state.post!
+                              .map((e) => _cardWidget(e, context))
+                              .toList(),
+                        ),
+                      )
+                    : Center(child: CircularProgressIndicator());
+          },
+        ));
   }
 
   Widget _cardWidget(Post post, BuildContext context) {
@@ -71,7 +67,7 @@ class _PostScreenState extends State<PostScreen> {
               height: 5.0,
             ),
             Text(
-              post.body,
+              post.body!,
               textAlign: TextAlign.justify,
               style: TextStyle(
                   color: Colors.black,
